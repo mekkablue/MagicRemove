@@ -24,8 +24,11 @@ class MagicRemover (PalettePlugin):
 	@objc.python_method
 	def settings(self):
 		self.name = Glyphs.localize({
-			'en': u'Magic Remover',
-			'de': u'Magic-Löscher',
+			'en': 'Magic Remover',
+			'de': 'Magic-Löscher',
+			'es': 'Borrador magico',
+			'fr': 'Gomme magique',
+			'pt': 'Apagador mágico',
 		})
 		
 		# Load .nib dialog (without .extension)
