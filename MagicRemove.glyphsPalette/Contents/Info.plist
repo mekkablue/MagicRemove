@@ -13,15 +13,15 @@
 	<key>CFBundleName</key>
 	<string>Magic Remover</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.2</string> <!-- 1.0 -->
+	<string>1.0.3</string> <!-- 1.0 -->
 	<key>CFBundleVersion</key>
-	<string>3</string> <!-- 123 -->
+	<string>4</string> <!-- 123 -->
 	<key>UpdateFeedURL</key>
 	<string>https://raw.githubusercontent.com/mekkablue/MagicRemover/master/MagicRemover.glyphsPalette/Contents/Info.plist</string>
 	<key>productPageURL</key>
 	<string>https://github.com/mekkablue/MagicRemover</string>
 	<key>productReleaseNotes</key>
-	<string>Localisation</string>
+	<string>Fix AttributeError when you make a new file.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright, Rainer Erich Scheichelbauer, 2020</string>
 	<key>NSPrincipalClass</key>

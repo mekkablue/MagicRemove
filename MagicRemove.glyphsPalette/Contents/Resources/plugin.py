@@ -65,65 +65,62 @@ class MagicRemover (PalettePlugin):
 	def eraseSelectedItemsOnAllMasters_(self, sender=None):
 		try:
 			# get current font
-			if sender:
-				font = sender.object()
-			else:
-				font = Glyphs.font
-			
-			# We’re in the Edit View
-			if font.currentTab and len(font.selectedLayers) == 1:
-				currentLayer = font.selectedLayers[0]
+			font = Glyphs.font
+			if font:
+				# We’re in the Edit View
+				if font.currentTab and len(font.selectedLayers) == 1:
+					currentLayer = font.selectedLayers[0]
 				
-				# collect selected items:
-				pathNodeIndexes = []
-				anchorNames = []
-				componentIndexes = []
-				for thisItem in currentLayer.selection:
-					if type(thisItem) == GSNode:
-						pathNodeIndexes.append(
-							currentLayer.indexPathOfNode_(thisItem)
-						)
-					elif type(thisItem) == GSAnchor:
-						anchorNames.append(
-							thisItem.name
-						)
-					elif type(thisItem) == GSComponent:
-						componentIndexes.append(
-							thisItem.elementIndex()
-						)
+					# collect selected items:
+					pathNodeIndexes = []
+					anchorNames = []
+					componentIndexes = []
+					for thisItem in currentLayer.selection:
+						if type(thisItem) == GSNode:
+							pathNodeIndexes.append(
+								currentLayer.indexPathOfNode_(thisItem)
+							)
+						elif type(thisItem) == GSAnchor:
+							anchorNames.append(
+								thisItem.name
+							)
+						elif type(thisItem) == GSComponent:
+							componentIndexes.append(
+								thisItem.elementIndex()
+							)
 				
-				# delete respective items on all (compatible) layers:
-				if pathNodeIndexes or anchorNames or componentIndexes:
+					# delete respective items on all (compatible) layers:
+					if pathNodeIndexes or anchorNames or componentIndexes:
 					
-					# reverse-sort path and node indexes
-					# so deletion of nodes does not mess with the indexes of the next node to be deleted
-					pathNodeIndexes = sorted( 
-						pathNodeIndexes, 
-						key=itemgetter(0,1), 
-						reverse=True,
-					)
+						# reverse-sort path and node indexes
+						# so deletion of nodes does not mess with the indexes of the next node to be deleted
+						pathNodeIndexes = sorted( 
+							pathNodeIndexes, 
+							key=itemgetter(0,1), 
+							reverse=True,
+						)
 	
-					currentCS = currentLayer.compareString()
-					thisGlyph = currentLayer.parent
-					allCompatibleLayers = [l for l in thisGlyph.layers 
-								if (l.isMasterLayer or l.isSpecialLayer)
-								and (l.compareString() == currentCS)
-								]
+						currentCS = currentLayer.compareString()
+						thisGlyph = currentLayer.parent
+						allCompatibleLayers = [l for l in thisGlyph.layers 
+									if (l.isMasterLayer or l.isSpecialLayer)
+									and (l.compareString() == currentCS)
+									]
 					
-					thisGlyph.beginUndo() # begin undo grouping
+						thisGlyph.beginUndo() # begin undo grouping
 					
-					for thisLayer in allCompatibleLayers:
-						for pathNodeIndex in pathNodeIndexes:
-							pathIndex, nodeIndex = pathNodeIndex[0], pathNodeIndex[1]
-							path = thisLayer.paths[pathIndex]
-							node = thisLayer.nodeAtIndexPath_(pathNodeIndex)
-							path.removeNodeCheckKeepShape_normalizeHandles_(node,True)
-						for anchorName in anchorNames:
-							thisLayer.removeAnchorWithName_(anchorName)
-						for componentIndex in sorted(componentIndexes, reverse=True):
-							thisLayer.removeComponentAtIndex_(componentIndex)
+						for thisLayer in allCompatibleLayers:
+							for pathNodeIndex in pathNodeIndexes:
+								pathIndex, nodeIndex = pathNodeIndex[0], pathNodeIndex[1]
+								path = thisLayer.paths[pathIndex]
+								node = thisLayer.nodeAtIndexPath_(pathNodeIndex)
+								path.removeNodeCheckKeepShape_normalizeHandles_(node,True)
+							for anchorName in anchorNames:
+								thisLayer.removeAnchorWithName_(anchorName)
+							for componentIndex in sorted(componentIndexes, reverse=True):
+								thisLayer.removeComponentAtIndex_(componentIndex)
 			
-					thisGlyph.endUndo()   # end undo grouping
+						thisGlyph.endUndo()   # end undo grouping
 		except Exception as e:
 			Glyphs.clearLog() # clears macro window log
 			print("Magic Remover Exception:")
