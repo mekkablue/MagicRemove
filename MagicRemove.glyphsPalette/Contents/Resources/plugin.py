@@ -62,8 +62,10 @@ class MagicRemover (PalettePlugin):
 	def eraseSelectedItemsOnAllMasters_(self, sender=None):
 		try:
 			# get current font
-			# TODO: *should* be deducted from the document window to which the palette belongs
-			font = Glyphs.font
+			if sender:
+				font = sender.object()
+			else:
+				font = Glyphs.font
 			
 			# We’re in the Edit View
 			if font.currentTab and len(font.selectedLayers) == 1:
