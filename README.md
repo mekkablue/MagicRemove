@@ -20,7 +20,7 @@ Palette plug-in for the Glyphs.app font editor, allows multiple-master deletion 
 
 ### License
 
-Copyright 2018 Rainer Erich Scheichelbauer (@mekkablue).
+Copyright 2020 Rainer Erich Scheichelbauer (@mekkablue).
 Based on sample code by Georg Seifert (@schriftgestalt) and Jan Gerner (@yanone).
 
 Licensed under the Apache License, Version 2.0 (the "License");
