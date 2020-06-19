@@ -13,15 +13,15 @@
 	<key>CFBundleName</key>
 	<string>Magic Remover</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.4</string> <!-- 1.0 -->
+	<string>1.0.5</string> <!-- 1.0 -->
 	<key>CFBundleVersion</key>
-	<string>5</string> <!-- 123 -->
+	<string>6</string> <!-- 123 -->
 	<key>UpdateFeedURL</key>
 	<string>https://raw.githubusercontent.com/mekkablue/MagicRemover/master/MagicRemover.glyphsPalette/Contents/Info.plist</string>
 	<key>productPageURL</key>
 	<string>https://github.com/mekkablue/MagicRemover</string>
 	<key>productReleaseNotes</key>
-	<string>Updated plugin binary.</string>
+	<string>Catch a crash in Glyphs 3.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright, Rainer Erich Scheichelbauer, 2020</string>
 	<key>NSPrincipalClass</key>
