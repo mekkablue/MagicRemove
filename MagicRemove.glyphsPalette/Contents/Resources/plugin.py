@@ -45,8 +45,8 @@ class MagicRemover (PalettePlugin):
 
 	@objc.python_method
 	def update(self, sender):
-		print(type(sender.object()), type(sender.object())==GSEditViewController, type(sender.object())==GSFont)
 		button = self.EraseButton
+
 		# Extract font from sender
 		currentTab, font = None, None
 		sentObject = sender.object()
@@ -59,7 +59,6 @@ class MagicRemover (PalettePlugin):
 			
 		# We’re in the Edit View
 		if currentTab:
-			# Check whether glyph is being edited
 			if len(font.selectedLayers) == 1:
 				if font.selectedLayers[0].selection:
 					button.setEnabled_(True)
