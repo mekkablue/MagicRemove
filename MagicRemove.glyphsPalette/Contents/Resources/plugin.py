@@ -48,9 +48,11 @@ class MagicRemover (PalettePlugin):
 		button = self.EraseButton
 		# Extract font from sender
 		font = sender.object()
+		# catch a potential crash (Glyphs 3)
 		if type(font)!=GSFont:
-			# probably the current tab (Glyphs 3)
 			font = font.parent
+		if type(font)!=GSFont:
+			font = font.font
 		# We’re in the Edit View
 		if font.currentTab:
 			# Check whether glyph is being edited
