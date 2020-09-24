@@ -59,7 +59,7 @@ class MagicRemover (PalettePlugin):
 			
 		# We’re in the Edit View
 		if currentTab:
-			if len(font.selectedLayers) == 1:
+			if font.selectedLayers and len(font.selectedLayers) == 1:
 				if font.selectedLayers[0].selection:
 					button.setEnabled_(True)
 					return
