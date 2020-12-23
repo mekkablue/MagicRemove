@@ -13,15 +13,9 @@
 	<key>CFBundleName</key>
 	<string>Magic Remover</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.6</string> <!-- 1.0 -->
+	<string>1.0.7</string>
 	<key>CFBundleVersion</key>
-	<string>6</string> <!-- 123 -->
-	<key>UpdateFeedURL</key>
-	<string>https://raw.githubusercontent.com/mekkablue/MagicRemover/master/MagicRemover.glyphsPalette/Contents/Info.plist</string>
-	<key>productPageURL</key>
-	<string>https://github.com/mekkablue/MagicRemover</string>
-	<key>productReleaseNotes</key>
-	<string>Fixed NoneType error crash in Glyphs 3.</string>
+	<string>7</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright, Rainer Erich Scheichelbauer, 2020</string>
 	<key>NSPrincipalClass</key>
@@ -30,5 +24,11 @@
 	<array>
 		<string>plugin.py</string>
 	</array>
+	<key>UpdateFeedURL</key>
+	<string>https://raw.githubusercontent.com/mekkablue/MagicRemover/master/MagicRemover.glyphsPalette/Contents/Info.plist</string>
+	<key>productPageURL</key>
+	<string>https://github.com/mekkablue/MagicRemover</string>
+	<key>productReleaseNotes</key>
+	<string>update binary files for Glyphs3</string>
 </dict>
 </plist>
