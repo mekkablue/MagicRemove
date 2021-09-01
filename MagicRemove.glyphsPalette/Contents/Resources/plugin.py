@@ -50,6 +50,8 @@ class MagicRemover (PalettePlugin):
 		# Extract font from sender
 		currentTab, font = None, None
 		sentObject = sender.object()
+		if sentObject is None:
+			return
 		if sentObject.isKindOfClass_(GSEditViewController):
 			currentTab = sentObject
 			font = currentTab.parent.font()
