@@ -15,7 +15,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.9</string>
 	<key>CFBundleVersion</key>
-	<string>10</string>
+	<string>11</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright, Rainer Erich Scheichelbauer, 2020</string>
 	<key>NSPrincipalClass</key>
