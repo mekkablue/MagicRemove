@@ -29,6 +29,7 @@ class MagicRemover (PalettePlugin):
 			'es': 'Borrador magico',
 			'fr': 'Gomme magique',
 			'pt': 'Apagador mágico',
+			'it': 'Cancellatore magico',
 		})
 		
 		# Load .nib dialog (without .extension)
