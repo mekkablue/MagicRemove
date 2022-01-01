@@ -17,6 +17,9 @@ from GlyphsApp import *
 from GlyphsApp.plugins import *
 from operator import itemgetter
 
+def hintID(h):
+	return (h.name, h.origin, h.target, h.other1, h.other2)
+
 class MagicRemover (PalettePlugin):
 	dialog = objc.IBOutlet()
 	EraseButton = objc.IBOutlet()
@@ -86,6 +89,8 @@ class MagicRemover (PalettePlugin):
 					pathNodeIndexes = []
 					anchorNames = []
 					componentIndexes = []
+					hintIDs = []
+					
 					for thisItem in currentLayer.selection:
 						if type(thisItem) == GSNode:
 							pathNodeIndexes.append(
@@ -99,9 +104,14 @@ class MagicRemover (PalettePlugin):
 							componentIndexes.append(
 								thisItem.elementIndex()
 							)
-				
+						elif type(thisItem) == GSHint:
+							if thisItem.isCorner:
+								hintIDs.append(
+									hintID(thisItem)
+								)
+					
 					# delete respective items on all (compatible) layers:
-					if pathNodeIndexes or anchorNames or componentIndexes:
+					if pathNodeIndexes or anchorNames or componentIndexes or hintIDs:
 					
 						# reverse-sort path and node indexes
 						# so deletion of nodes does not mess with the indexes of the next node to be deleted
@@ -130,6 +140,10 @@ class MagicRemover (PalettePlugin):
 								thisLayer.removeAnchorWithName_(anchorName)
 							for componentIndex in sorted(componentIndexes, reverse=True):
 								thisLayer.removeComponentAtIndex_(componentIndex)
+							if hintIDs:
+								for hintIndex in sorted(range(len(thisLayer.hints)), reverse=True):
+									if hintID(thisLayer.hints[hintIndex]) in hintIDs:
+										thisLayer.removeHint_(thisLayer.hints[hintIndex])
 			
 						thisGlyph.endUndo()   # end undo grouping
 		except Exception as e:
