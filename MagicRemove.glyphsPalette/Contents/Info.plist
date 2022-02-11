@@ -13,9 +13,9 @@
 	<key>CFBundleName</key>
 	<string>Magic Remover</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.0</string>
+	<string>1.1.1</string>
 	<key>CFBundleVersion</key>
-	<string>13</string>
+	<string>14</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright, Rainer Erich Scheichelbauer, 2020</string>
 	<key>NSPrincipalClass</key>
@@ -29,6 +29,6 @@
 	<key>productPageURL</key>
 	<string>https://github.com/mekkablue/MagicRemover</string>
 	<key>productReleaseNotes</key>
-	<string>Now also removes corner components.</string>
+	<string>Properly remove components.</string>
 </dict>
 </plist>

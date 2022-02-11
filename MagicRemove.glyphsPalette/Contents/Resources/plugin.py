@@ -139,7 +139,7 @@ class MagicRemover (PalettePlugin):
 							for anchorName in anchorNames:
 								thisLayer.removeAnchorWithName_(anchorName)
 							for componentIndex in sorted(componentIndexes, reverse=True):
-								thisLayer.removeComponentAtIndex_(componentIndex)
+								del thisLayer.components[componentIndex]
 							if hintIDs:
 								for hintIndex in sorted(range(len(thisLayer.hints)), reverse=True):
 									if hintID(thisLayer.hints[hintIndex]) in hintIDs:
