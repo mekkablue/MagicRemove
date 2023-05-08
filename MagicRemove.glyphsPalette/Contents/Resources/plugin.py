@@ -129,13 +129,26 @@ class MagicRemover (PalettePlugin):
 									]
 					
 						thisGlyph.beginUndo() # begin undo grouping
-					
+						removePaths = list()
 						for thisLayer in allCompatibleLayers:
+							removeNodes = list()
 							for pathNodeIndex in pathNodeIndexes:
-								pathIndex, nodeIndex = pathNodeIndex[0], pathNodeIndex[1]
-								path = thisLayer.paths[pathIndex]
 								node = thisLayer.nodeAtIndexPath_(pathNodeIndex)
-								path.removeNodeCheckKeepShape_normalizeHandles_(node,True)
+								removeNodes.append(node)
+							if len(removeNodes) == 1:
+								node = removeNodes[0]
+								path = node.parent
+								path.removeNodeCheckKeepShape_normalizeHandles_(node, True)
+								if len(path) == 0:
+									removePaths.append(path)
+							else:
+								for node in removeNodes:
+									path = node.parent
+									if path is None or node not in path.nodes: # it might be remove already
+										continue
+									path.removeNodeCheck_(node)
+									if len(path) == 0:
+										removePaths.append(path)
 							for anchorName in anchorNames:
 								thisLayer.removeAnchorWithName_(anchorName)
 							for componentIndex in sorted(componentIndexes, reverse=True):
@@ -150,7 +163,8 @@ class MagicRemover (PalettePlugin):
 								for hintIndex in sorted(range(len(thisLayer.hints)), reverse=True):
 									if hintID(thisLayer.hints[hintIndex]) in hintIDs:
 										thisLayer.removeHint_(thisLayer.hints[hintIndex])
-			
+						for path in removePaths:
+							path.parent.removeShape_(path)
 						thisGlyph.endUndo()   # end undo grouping
 		except Exception as e:
 			Glyphs.clearLog() # clears macro window log
