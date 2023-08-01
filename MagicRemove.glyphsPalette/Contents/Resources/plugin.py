@@ -147,7 +147,7 @@ class MagicRemover (PalettePlugin):
 									if path is None or node not in path.nodes: # it might be remove already
 										continue
 									path.removeNodeCheck_(node)
-									if len(path) == 0:
+									if len(path.nodes) == 0:
 										removePaths.append(path)
 							for anchorName in anchorNames:
 								thisLayer.removeAnchorWithName_(anchorName)
@@ -165,6 +165,7 @@ class MagicRemover (PalettePlugin):
 										thisLayer.removeHint_(thisLayer.hints[hintIndex])
 						for path in removePaths:
 							path.parent.removeShape_(path)
+						
 						thisGlyph.endUndo()   # end undo grouping
 		except Exception as e:
 			Glyphs.clearLog() # clears macro window log
