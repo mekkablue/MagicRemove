@@ -146,7 +146,7 @@ class MagicRemover (PalettePlugin):
 									path = node.parent
 									if path is None or node not in path.nodes: # it might be remove already
 										continue
-									path.removeNodeCheck_(node)
+									path.removeNodeCheckKeepShape_normalizeHandles_(node, True)
 									if len(path.nodes) == 0:
 										removePaths.append(path)
 							for anchorName in anchorNames:
