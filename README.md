@@ -12,6 +12,8 @@ Palette plug-in for the Glyphs.app font editor, allows multiple-master deletion 
 
 **Remove multiple nodes and keep shape:** The same behaviour you have when you select and delete an individual node, just for many nodes at once. Works for single master and multiple masters.
 
+**Backup in background layers:** Hold down the Cmd key when you click the button, and Magic Remover will create backups of all affected layers before removing nodes, and place the backups in each layer’s background.
+
 ### Installation
 
 1. Open *Window > Plugin Manager*

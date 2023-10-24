@@ -16,6 +16,7 @@ import objc
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 from operator import itemgetter
+from AppKit import NSEvent, NSEventModifierFlagCommand
 
 def hintID(h):
 	return (h.name, h.origin, h.target, h.other1, h.other2)
@@ -73,18 +74,31 @@ class MagicRemover (PalettePlugin):
 		# default: disable button
 		button.setEnabled_(False)
 		return
-		
+	
+	@objc.python_method
+	def backupAllLayersOfGlyph(self, glyph):
+		for layer in glyph.layers:
+			if layer.isMasterLayer:
+				layer.contentToBackgroundCheckSelection_keepOldBackground_(False, False)
+				layer.background = layer.background.copyDecomposedLayer()
+	
 	# Action triggered by UI
 	@objc.IBAction
 	def eraseSelectedItemsOnAllMasters_(self, sender=None):
 		try:
+			keysPressed = NSEvent.modifierFlags()
+			shouldBackupFirst = keysPressed & NSEventModifierFlagCommand == NSEventModifierFlagCommand
+			
 			# get current font
 			font = Glyphs.font
 			if font:
 				# We’re in the Edit View
 				if font.currentTab and len(font.selectedLayers) == 1:
 					currentLayer = font.selectedLayers[0]
-				
+					thisGlyph = currentLayer.parent
+					if shouldBackupFirst:
+						self.backupAllLayersOfGlyph(thisGlyph)
+					
 					# collect selected items:
 					pathNodeIndexes = []
 					anchorNames = []
@@ -122,7 +136,6 @@ class MagicRemover (PalettePlugin):
 						)
 	
 						currentCS = currentLayer.compareString()
-						thisGlyph = currentLayer.parent
 						allCompatibleLayers = [l for l in thisGlyph.layers 
 									if (l.isMasterLayer or l.isSpecialLayer)
 									and (l.compareString() == currentCS)
