@@ -106,19 +106,19 @@ class MagicRemover (PalettePlugin):
 					hintIDs = []
 					
 					for thisItem in currentLayer.selection:
-						if type(thisItem) == GSNode:
+						if isinstance(thisItem, GSNode):
 							pathNodeIndexes.append(
 								currentLayer.indexPathOfNode_(thisItem)
 							)
-						elif type(thisItem) == GSAnchor:
+						elif isinstance(thisItem, GSAnchor):
 							anchorNames.append(
 								thisItem.name
 							)
-						elif type(thisItem) == GSComponent:
+						elif isinstance(thisItem, GSComponent):
 							componentIndexes.append(
 								thisItem.elementIndex()
 							)
-						elif type(thisItem) == GSHint:
+						elif isinstance(thisItem, GSHint):
 							if thisItem.isCorner:
 								hintIDs.append(
 									hintID(thisItem)
@@ -157,7 +157,7 @@ class MagicRemover (PalettePlugin):
 							else:
 								for node in removeNodes:
 									path = node.parent
-									if path is None or node not in path.nodes: # it might be remove already
+									if path is None or node not in path.nodes: # can be removed already
 										continue
 									path.removeNodeCheckKeepShape_normalizeHandles_(node, True)
 									if len(path.nodes) == 0:
