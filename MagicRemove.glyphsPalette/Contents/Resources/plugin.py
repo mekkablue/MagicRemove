@@ -13,13 +13,15 @@ from __future__ import division, print_function, unicode_literals
 ###########################################################################################################
 
 import objc
-from GlyphsApp import *
-from GlyphsApp.plugins import *
+from GlyphsApp import Glyphs, GSFont, GSEditViewController, GSNode, GSAnchor, GSComponent, GSHint, UPDATEINTERFACE
+from GlyphsApp.plugins import PalettePlugin
 from operator import itemgetter
 from AppKit import NSEvent, NSEventModifierFlagCommand
 
+
 def hintID(h):
 	return (h.name, h.origin, h.target, h.other1, h.other2)
+
 
 class MagicRemover (PalettePlugin):
 	dialog = objc.IBOutlet()
@@ -35,7 +37,7 @@ class MagicRemover (PalettePlugin):
 			'pt': 'Apagador mágico',
 			'it': 'Cancellatore magico',
 		})
-		
+
 		# Load .nib dialog (without .extension)
 		self.loadNib('IBdialog', __file__)
 
@@ -44,7 +46,7 @@ class MagicRemover (PalettePlugin):
 		# Adding a callback for the 'GSUpdateInterface' event
 		Glyphs.addCallback(self.update, UPDATEINTERFACE)
 
-	@objc.python_method	
+	@objc.python_method
 	def __del__(self):
 		Glyphs.removeCallback(self.update)
 
@@ -57,38 +59,38 @@ class MagicRemover (PalettePlugin):
 		sentObject = sender.object()
 		if sentObject is None:
 			return
-		if sentObject.isKindOfClass_(GSEditViewController):
+		if isinstance(sentObject, GSEditViewController):
 			currentTab = sentObject
 			font = currentTab.parent.font()
-		elif sentObject.isKindOfClass_(GSFont):
+		elif isinstance(sentObject, GSFont):
 			font = sentObject
 			currentTab = font.currentTab
-			
+
 		# We’re in the Edit View
 		if currentTab:
 			if font.selectedLayers and len(font.selectedLayers) == 1:
 				if font.selectedLayers[0].selection:
 					button.setEnabled_(True)
 					return
-		
+
 		# default: disable button
 		button.setEnabled_(False)
 		return
-	
+
 	@objc.python_method
 	def backupAllLayersOfGlyph(self, glyph):
 		for layer in glyph.layers:
 			if layer.isMasterLayer:
 				layer.contentToBackgroundCheckSelection_keepOldBackground_(False, False)
 				layer.background = layer.background.copyDecomposedLayer()
-	
+
 	# Action triggered by UI
 	@objc.IBAction
 	def eraseSelectedItemsOnAllMasters_(self, sender=None):
 		try:
 			keysPressed = NSEvent.modifierFlags()
 			shouldBackupFirst = keysPressed & NSEventModifierFlagCommand == NSEventModifierFlagCommand
-			
+
 			# get current font
 			font = Glyphs.font
 			if font:
@@ -98,13 +100,13 @@ class MagicRemover (PalettePlugin):
 					thisGlyph = currentLayer.parent
 					if shouldBackupFirst:
 						self.backupAllLayersOfGlyph(thisGlyph)
-					
+
 					# collect selected items:
 					pathNodeIndexes = []
 					anchorNames = []
 					componentIndexes = []
 					hintIDs = []
-					
+
 					for thisItem in currentLayer.selection:
 						if isinstance(thisItem, GSNode):
 							pathNodeIndexes.append(
@@ -123,25 +125,24 @@ class MagicRemover (PalettePlugin):
 								hintIDs.append(
 									hintID(thisItem)
 								)
-					
+
 					# delete respective items on all (compatible) layers:
 					if pathNodeIndexes or anchorNames or componentIndexes or hintIDs:
-					
 						# reverse-sort path and node indexes
 						# so deletion of nodes does not mess with the indexes of the next node to be deleted
-						pathNodeIndexes = sorted( 
-							pathNodeIndexes, 
-							key=itemgetter(0,1), 
+						pathNodeIndexes = sorted(
+							pathNodeIndexes,
+							key=itemgetter(0, 1),
 							reverse=True,
 						)
-	
 						currentCS = currentLayer.compareString()
-						allCompatibleLayers = [l for l in thisGlyph.layers 
-									if (l.isMasterLayer or l.isSpecialLayer)
-									and (l.compareString() == currentCS)
-									]
-					
-						thisGlyph.beginUndo() # begin undo grouping
+						allCompatibleLayers = [
+							l for l in thisGlyph.layers
+							if (l.isMasterLayer or l.isSpecialLayer)
+							and (l.compareString() == currentCS)
+						]
+
+						thisGlyph.beginUndo()  # begin undo grouping
 						removePaths = list()
 						for thisLayer in allCompatibleLayers:
 							removeNodes = list()
@@ -157,7 +158,7 @@ class MagicRemover (PalettePlugin):
 							else:
 								for node in removeNodes:
 									path = node.parent
-									if path is None or node not in path.nodes: # can be removed already
+									if path is None or node not in path.nodes:  # can be removed already
 										continue
 									path.removeNodeCheckKeepShape_normalizeHandles_(node, True)
 									if len(path.nodes) == 0:
@@ -171,17 +172,17 @@ class MagicRemover (PalettePlugin):
 								else:
 									# GLYPHS 2
 									del thisLayer.components[componentIndex]
-								
+
 							if hintIDs:
 								for hintIndex in sorted(range(len(thisLayer.hints)), reverse=True):
 									if hintID(thisLayer.hints[hintIndex]) in hintIDs:
 										thisLayer.removeHint_(thisLayer.hints[hintIndex])
 						for path in removePaths:
 							path.parent.removeShape_(path)
-						
+
 						thisGlyph.endUndo()   # end undo grouping
 		except Exception as e:
-			Glyphs.clearLog() # clears macro window log
+			Glyphs.clearLog()  # clears macro window log
 			print("Magic Remover Exception:")
 			print(e)
 			print("\nMagic Remover Traceback:")
