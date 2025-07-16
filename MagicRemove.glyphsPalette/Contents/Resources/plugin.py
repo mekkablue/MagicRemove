@@ -13,11 +13,11 @@ from __future__ import division, print_function, unicode_literals
 ###########################################################################################################
 
 import objc
-from GlyphsApp import Glyphs, GSFont, GSEditViewController, GSNode, GSAnchor, GSComponent, GSHint, UPDATEINTERFACE
+from GlyphsApp import Glyphs, GSFont, GSEditViewController, GSPath, GSNode, GSAnchor, GSComponent, GSHint, UPDATEINTERFACE, LINE
 from GlyphsApp.plugins import PalettePlugin
 from operator import itemgetter
-from AppKit import NSEvent, NSEventModifierFlagCommand
-
+from AppKit import NSEvent, NSEventModifierFlagCommand, NSEventModifierFlagOption
+from copy import copy
 
 def hintID(h):
 	return (h.name, h.origin, h.target, h.other1, h.other2)
@@ -90,6 +90,7 @@ class MagicRemover (PalettePlugin):
 		try:
 			keysPressed = NSEvent.modifierFlags()
 			shouldBackupFirst = keysPressed & NSEventModifierFlagCommand == NSEventModifierFlagCommand
+			shouldBreakPath =  keysPressed & NSEventModifierFlagOption == NSEventModifierFlagOption
 
 			# get current font
 			font = Glyphs.font
@@ -145,26 +146,81 @@ class MagicRemover (PalettePlugin):
 						thisGlyph.beginUndo()  # begin undo grouping
 						removePaths = list()
 						for thisLayer in allCompatibleLayers:
+							
+							# NODES
 							removeNodes = list()
 							for pathNodeIndex in pathNodeIndexes:
 								node = thisLayer.nodeAtIndexPath_(pathNodeIndex)
 								removeNodes.append(node)
-							if len(removeNodes) == 1:
-								node = removeNodes[0]
-								path = node.parent
-								path.removeNodeCheckKeepShape_normalizeHandles_(node, True)
-								if len(path) == 0:
-									removePaths.append(path)
-							else:
-								for node in removeNodes:
+
+							if not shouldBreakPath:
+								if len(removeNodes) == 1:
+									node = removeNodes[0]
 									path = node.parent
-									if path is None or node not in path.nodes:  # can be removed already
-										continue
 									path.removeNodeCheckKeepShape_normalizeHandles_(node, True)
-									if len(path.nodes) == 0:
+									if len(path) == 0:
 										removePaths.append(path)
+								else:
+									for node in removeNodes:
+										path = node.parent
+										if path is None or node not in path.nodes:  # may have been removed already
+											continue
+										path.removeNodeCheckKeepShape_normalizeHandles_(node, True)
+										if len(path.nodes) == 0:
+											removePaths.append(path)
+							else:
+								# user held down OPTION key, so break path:
+								while removeNodes:
+									first = removeNodes.pop(-1)
+									last = first
+									path = first.parent
+
+									# contiguous node selection:
+									while first.prevNode is not None and first.prevNode in removeNodes:
+										removeNodes.remove(first.prevNode)
+										first = first.prevNode
+									while last.nextNode is not None and last.nextNode in removeNodes:
+										removeNodes.remove(last.nextNode)
+										last = last.nextNode
+
+									nextOn = path.nextOncurveNodeFromIndex_(last.index)
+									prevOn = path.previousOncurveNodeFromIndex_(first.index)
+									if path.closed:
+										# set new start node and open path:
+										path.makeNodeFirst_(nextOn)
+										path.setClosePath_fixStartNode_(0, 1)
+										# delete nodes:
+										deleteme = path.nodes[-1]
+										while path.nodes and deleteme != prevOn:
+											del path.nodes[-1]
+											deleteme = path.nodes[-1]
+									else:
+										# split up (open) path in two or three paths:
+										splitIndex = prevOn.index
+										if splitIndex > 0:
+											splitPath = GSPath()
+											for i in range(splitIndex+1):
+												splitNode = path.nodes[i]
+												splitPath.nodes.append(splitNode)
+											thisLayer.shapes.append(splitPath)
+
+										splitIndex = nextOn.index
+										lastIndex = len(path.nodes) - 1
+										if splitIndex < lastIndex:
+											splitPath = GSPath()
+											for i in range(lastIndex, splitIndex-1, -1):
+												splitNode = path.nodes[i]
+												splitPath.nodes.insert(0, splitNode)
+											splitPath.nodes[0].type = LINE
+											thisLayer.shapes.append(splitPath)
+										
+										removePaths.append(path)
+
+							# ANCHORS
 							for anchorName in anchorNames:
 								thisLayer.removeAnchorWithName_(anchorName)
+
+							# COMPONENTS
 							for componentIndex in sorted(componentIndexes, reverse=True):
 								if Glyphs.versionNumber >= 3:
 									# GLYPHS 3
@@ -173,12 +229,16 @@ class MagicRemover (PalettePlugin):
 									# GLYPHS 2
 									del thisLayer.components[componentIndex]
 
+							# CORNERS AND CAPS
 							if hintIDs:
 								for hintIndex in sorted(range(len(thisLayer.hints)), reverse=True):
 									if hintID(thisLayer.hints[hintIndex]) in hintIDs:
 										thisLayer.removeHint_(thisLayer.hints[hintIndex])
+
+						# EMPTY PATHS (left over after removing all nodes)
 						for path in removePaths:
-							path.parent.removeShape_(path)
+							respectiveLayer = path.parent
+							respectiveLayer.removeShape_(path)
 
 						thisGlyph.endUndo()   # end undo grouping
 		except Exception as e:
