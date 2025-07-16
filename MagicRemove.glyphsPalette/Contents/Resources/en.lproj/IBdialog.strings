@@ -1,6 +1,6 @@
 /* MM Remove Button */
 "FOa-qu-hhl.title" = "Magic Remove";
-"FOa-qu-hhl.toolTip" = "Deletes all selected items and their respective counterparts on all compatible layers.";
+"FOa-qu-hhl.toolTip" = "Deletes all selected items and their respective counterparts on all compatible layers. Hold down COMMAND to first make a backup in the background layer. Hold down OPTION to break open paths at the segments you delete.";
 
 /* Enclosing object */
-"Ccx-2A-ilM.toolTip" = "Deletes all selected items and their respective counterparts on all compatible layers.";
+"Ccx-2A-ilM.toolTip" = "Deletes all selected items and their respective counterparts on all compatible layers. Hold down COMMAND to first make a backup in the background layer. Hold down OPTION to break open paths at the segments you delete.";

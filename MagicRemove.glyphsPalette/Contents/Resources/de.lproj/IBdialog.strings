@@ -1,6 +1,6 @@
 /* MM Remove Button */
 "FOa-qu-hhl.title" = "Magic Löschen";
-"FOa-qu-hhl.toolTip" = "Löscht alle ausgewählten Objekte samt ihren Entsprechungen auf allen kompatiblen Ebenen.";
+"FOa-qu-hhl.toolTip" = "Löscht alle ausgewählten Objekte samt ihren Entsprechungen auf allen kompatiblen Ebenen. Halte die Befehlstaste (COMMAND) gedrückt, um zunächst ein Backup in der Hintergrundebene zu erstellen. Halte die Wahltaste (OPTION) gedrückt, um Pfade an den gelöschten Segmenten aufzubrechen.";
 
 /* Enclosing object */
-"Ccx-2A-ilM.toolTip" = "Löscht alle ausgewählten Objekte samt ihren Entsprechungen auf allen kompatiblen Ebenen.";
+"Ccx-2A-ilM.toolTip" = "Löscht alle ausgewählten Objekte samt ihren Entsprechungen auf allen kompatiblen Ebenen. Halte die Befehlstaste (COMMAND) gedrückt, um zunächst ein Backup in der Hintergrundebene zu erstellen. Halte die Wahltaste (OPTION) gedrückt, um Pfade an den gelöschten Segmenten aufzubrechen.";

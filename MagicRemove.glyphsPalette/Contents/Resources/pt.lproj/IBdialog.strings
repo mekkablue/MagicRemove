@@ -1,6 +1,6 @@
 /* MM Remove Button */
 "FOa-qu-hhl.title" = "Apagador Mágico";
-"FOa-qu-hhl.toolTip" = "Exclui todos os itens selecionados e seus equivalentes em todas as camadas compatíveis.";
+"FOa-qu-hhl.toolTip" = "Exclui todos os itens selecionados e seus equivalentes em todas as camadas compatíveis. Mantenha pressionada a tecla COMMAND para primeiro fazer um backup na camada de fundo. Mantenha pressionada a tecla OPTION para abrir os caminhos nos segmentos que você excluir.";
 
 /* Enclosing object */
-"Ccx-2A-ilM.toolTip" = "Exclui todos os itens selecionados e seus equivalentes em todas as camadas compatíveis.";
+"Ccx-2A-ilM.toolTip" = "Exclui todos os itens selecionados e seus equivalentes em todas as camadas compatíveis. Mantenha pressionada a tecla COMMAND para primeiro fazer um backup na camada de fundo. Mantenha pressionada a tecla OPTION para abrir os caminhos nos segmentos que você excluir.";

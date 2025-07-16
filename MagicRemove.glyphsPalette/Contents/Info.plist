@@ -13,9 +13,9 @@
 	<key>CFBundleName</key>
 	<string>Magic Remover</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3.1</string>
+	<string>1.3.2</string>
 	<key>CFBundleVersion</key>
-	<string>20</string>
+	<string>21</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright, Rainer Erich Scheichelbauer, 2020</string>
 	<key>NSPrincipalClass</key>
@@ -29,6 +29,6 @@
 	<key>productPageURL</key>
 	<string>https://github.com/mekkablue/MagicRemover</string>
 	<key>productReleaseNotes</key>
-	<string>Allow single segment when breaking path by holding down OPTION.</string>
+	<string>Updated tooltips for the combo key options.</string>
 </dict>
 </plist>

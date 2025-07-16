@@ -1,6 +1,6 @@
 /* MM Remove Button */
 "FOa-qu-hhl.title" = "Borrar Magic";
-"FOa-qu-hhl.toolTip" = "Elimina todos los elementos seleccionados y sus equivalentes en todas las capas compatibles.";
+"FOa-qu-hhl.toolTip" = "Elimina todos los elementos seleccionados y sus equivalentes en todas las capas compatibles. Mantén presionada la tecla COMMAND para primero hacer una copia de seguridad en la capa de fondo. Mantén presionada la tecla OPTION para abrir los trazados en los segmentos que elimines.";
 
 /* Enclosing object */
-"Ccx-2A-ilM.toolTip" = "Elimina todos los elementos seleccionados y sus equivalentes en todas las capas compatibles.";
+"Ccx-2A-ilM.toolTip" = "Elimina todos los elementos seleccionados y sus equivalentes en todas las capas compatibles. Mantén presionada la tecla COMMAND para primero hacer una copia de seguridad en la capa de fondo. Mantén presionada la tecla OPTION para abrir los trazados en los segmentos que elimines.";

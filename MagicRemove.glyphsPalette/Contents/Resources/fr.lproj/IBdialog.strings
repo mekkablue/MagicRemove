@@ -1,6 +1,6 @@
 /* MM Remove Button */
 "FOa-qu-hhl.title" = "Gomme magique";
-"FOa-qu-hhl.toolTip" = "Supprime tous les éléments sélectionnés et leurs équivalents sur tous les calques compatibles.";
+"FOa-qu-hhl.toolTip" = "Supprime tous les éléments sélectionnés et leurs équivalents sur tous les calques compatibles. Maintenez la touche COMMAND enfoncée pour d’abord effectuer une sauvegarde dans le calque d’arrière-plan. Maintenez la touche OPTION enfoncée pour ouvrir les tracés aux segments que vous supprimez.";
 
 /* Enclosing object */
-"Ccx-2A-ilM.toolTip" = "Supprime tous les éléments sélectionnés et leurs équivalents sur tous les calques compatibles.";
+"Ccx-2A-ilM.toolTip" = "Supprime tous les éléments sélectionnés et leurs équivalents sur tous les calques compatibles. Maintenez la touche COMMAND enfoncée pour d’abord effectuer une sauvegarde dans le calque d’arrière-plan. Maintenez la touche OPTION enfoncée pour ouvrir les tracés aux segments que vous supprimez.";

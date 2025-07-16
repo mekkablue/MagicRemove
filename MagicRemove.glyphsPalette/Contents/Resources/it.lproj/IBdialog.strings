@@ -1,6 +1,6 @@
 /* MM Remove Button */
 "FOa-qu-hhl.title" = "Cancellatore Magico";
-"FOa-qu-hhl.toolTip" = "Elimina tutti gli elementi selezionati e i suoi equivalenti in tutti i livelli compatibili.";
+"FOa-qu-hhl.toolTip" = "Elimina tutti gli elementi selezionati e i suoi equivalenti in tutti i livelli compatibili. Tieni premuto COMMAND per creare prima un backup nel livello di sfondo. Tieni premuto OPTION per interrompere i tracciati nei segmenti che elimini.";
 
 /* Enclosing object */
-"Ccx-2A-ilM.toolTip" = "Elimina tutti gli elementi selezionati e i suoi equivalenti in tutti i livelli compatibili.";
+"Ccx-2A-ilM.toolTip" = "Elimina tutti gli elementi selezionati e i suoi equivalenti in tutti i livelli compatibili. Tieni premuto COMMAND per creare prima un backup nel livello di sfondo. Tieni premuto OPTION per interrompere i tracciati nei segmenti che elimini.";
