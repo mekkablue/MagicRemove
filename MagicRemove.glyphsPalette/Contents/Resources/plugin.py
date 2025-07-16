@@ -175,7 +175,7 @@ class MagicRemover (PalettePlugin):
 									last = first
 									path = first.parent
 
-									# contiguous node selection:
+									# expand to contiguous node selection:
 									while first.prevNode is not None and first.prevNode in removeNodes:
 										removeNodes.remove(first.prevNode)
 										first = first.prevNode
@@ -183,8 +183,14 @@ class MagicRemover (PalettePlugin):
 										removeNodes.remove(last.nextNode)
 										last = last.nextNode
 
-									nextOn = path.nextOncurveNodeFromIndex_(last.index)
-									prevOn = path.previousOncurveNodeFromIndex_(first.index)
+									if first is path.previousOncurveNodeFromIndex_(last.index):
+										# single segment
+										nextOn = last
+										prevOn = first
+									else:
+										nextOn = path.nextOncurveNodeFromIndex_(last.index)
+										prevOn = path.previousOncurveNodeFromIndex_(first.index)
+
 									if path.closed:
 										# set new start node and open path:
 										path.makeNodeFirst_(nextOn)
