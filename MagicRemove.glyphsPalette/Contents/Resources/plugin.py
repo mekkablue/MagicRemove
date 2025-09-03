@@ -13,7 +13,7 @@ from __future__ import division, print_function, unicode_literals
 ###########################################################################################################
 
 import objc
-from GlyphsApp import Glyphs, GSFont, GSEditViewController, GSPath, GSNode, GSAnchor, GSComponent, GSHint, UPDATEINTERFACE, LINE
+from GlyphsApp import Glyphs, GSEditViewController, GSFont, GSPath, GSNode, GSAnchor, GSComponent, GSHint, UPDATEINTERFACE, LINE, OFFCURVE
 from GlyphsApp.plugins import PalettePlugin
 from operator import itemgetter
 from AppKit import NSEvent, NSEventModifierFlagCommand, NSEventModifierFlagOption
@@ -61,6 +61,8 @@ class MagicRemover (PalettePlugin):
 			return
 		if isinstance(sentObject, GSEditViewController):
 			currentTab = sentObject
+			if isinstance(currentTab.parent, GSFont):
+				return
 			font = currentTab.parent.font()
 		elif isinstance(sentObject, GSFont):
 			font = sentObject
@@ -90,7 +92,7 @@ class MagicRemover (PalettePlugin):
 		try:
 			keysPressed = NSEvent.modifierFlags()
 			shouldBackupFirst = keysPressed & NSEventModifierFlagCommand == NSEventModifierFlagCommand
-			shouldBreakPath =  keysPressed & NSEventModifierFlagOption == NSEventModifierFlagOption
+			shouldBreakPath = keysPressed & NSEventModifierFlagOption == NSEventModifierFlagOption
 
 			# get current font
 			font = Glyphs.font
@@ -183,8 +185,9 @@ class MagicRemover (PalettePlugin):
 										removeNodes.remove(last.nextNode)
 										last = last.nextNode
 
-									if first is path.previousOncurveNodeFromIndex_(last.index):
-										# single segment
+									# if first is path.previousOncurveNodeFromIndex_(last.index):
+									if first != last and first.type != OFFCURVE and last.type != OFFCURVE:
+										# full segment(s) selected
 										nextOn = last
 										prevOn = first
 									else:
