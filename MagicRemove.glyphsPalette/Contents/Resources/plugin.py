@@ -61,7 +61,7 @@ class MagicRemover (PalettePlugin):
 			return
 		if isinstance(sentObject, GSEditViewController):
 			currentTab = sentObject
-			if isinstance(currentTab.parent, GSFont):
+			if not isinstance(currentTab.parent, GSFont):
 				return
 			font = currentTab.parent.font()
 		elif isinstance(sentObject, GSFont):
